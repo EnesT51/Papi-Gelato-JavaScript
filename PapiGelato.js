@@ -1,9 +1,15 @@
-//const prompt=require("prompt-sync")({sigint:true}); 
 var IceOptions = {IceFlawor: "", IcePrice: 0.95, PriceBowlIce: 0.75, PriceHornIce: 1.25};
 var IceToppings = {CreamPrice: 0.50, SprinklesPrice: 0.30, CaramelBowlPrice: 0.90, CaramelHornPrice: 0.60};
 var Total = {TotalHorn: 0, TotalBowl: 0, TotalBalls: 0};
 var ZakelijkijsBoninfo = {PrijsLiterIjs: 9.80, LiterIjs: 0};
 var Topping = {Topping: 0, ToppingTotal: 0};
+
+var text = document.createElement("h2");
+var node = document.createTextNode("[Bon Papi-Gelato]");
+var paragraph = document.createElement("p");
+text.appendChild(node);
+document.body.appendChild(text);
+document.body.appendChild(paragraph);
 
 function Welcome(){
    console.log('Welcome to Papi Gelato.');
@@ -35,10 +41,10 @@ function TypeCustomer(){
 function ZakelijkIjsBon(){
    var Total = (ZakelijkijsBoninfo["LiterIjs"] * ZakelijkijsBoninfo["PrijsLiterIjs"]);
    var BTW = (Total/106*6).toFixed(2);
-   console.log("------------[Papi Gelato]------------");
-   console.log(`Liter    ${ZakelijkijsBoninfo["LiterIjs"]} x  ${ZakelijkijsBoninfo["PrijsLiterIjs"]} = €${Total}`);
-   console.log(`Totaal   = €${Total}`);
-   console.log(`BTW (6%) = €${BTW}`);
+   paragraph.innerHTML += ("------------[Papi Gelato]------------") + "<br>";
+   paragraph.innerHTML += (`Liter    ${ZakelijkijsBoninfo["LiterIjs"]} x  ${ZakelijkijsBoninfo["PrijsLiterIjs"]} = €${Total}`) + "<br>";
+   paragraph.innerHTML += (`Totaal   = €${Total}`) + "<br>";
+   paragraph.innerHTML += (`BTW (6%) = €${BTW}`) + "<br>";
 }
 function ZakelijkIjsSmaken(){
    let literijs = parseInt(prompt("Hoeveel liter ijs wilt u hebben? "));
@@ -70,9 +76,9 @@ function Toppings(BakjeHoorentje){
          Topping["ToppingTotal"] += IceToppings["CreamPrice"];
       }else if(PrompToppings == "C"){
          Topping["Topping"] +=1;
+         Topping["ToppingTotal"] += IceToppings["SprinklesPrice"];
       }else if (PrompToppings == "D"){
          Topping["Topping"] +=1
-         Topping["ToppingTotal"] +=  IceToppings["SprinklesPrice"];
          if(BakjeHoorentje == "hoorntje"){
             Topping["ToppingTotal"] += IceToppings["CaramelHornPrice"];
          }else{
@@ -91,20 +97,20 @@ function Bon(){
    var CalculatePriceHorn = Total["TotalHorn"] * IceOptions["PriceHornIce"];
    var CalculateTotalPrice = CalculatePriceIceBalls + CalculatePriceBowl + CalculatePriceHorn + Topping["ToppingTotal"];
 
-   console.log("------------[Papi Gelato]-------------");
-   console.log(`Bolletjes ${Total["TotalBalls"]} x €${IceOptions["IcePrice"]} = ${CalculatePriceIceBalls.toFixed(2)}`);
+   paragraph.innerHTML += ("------------[Papi Gelato]--------------") + "<br>";
+   paragraph.innerHTML += (`Bolletjes ${Total["TotalBalls"]} x €${IceOptions["IcePrice"]} = ${CalculatePriceIceBalls.toFixed(2)}`) + "<br>";
    if(Total["TotalHorn"] > 0){
-      console.log(`Hoorntje   ${Total["TotalHorn"]} x = €${CalculatePriceHorn.toFixed(2)}`);
+      paragraph.innerHTML += (`Hoorntje   ${Total["TotalHorn"]} x = €${CalculatePriceHorn.toFixed(2)}`) + "<br>";
    }else{null}
    if(Total["TotalBowl"] > 0){
-      console.log(`Bakje      ${Total["TotalBowl"]} x = €${CalculatePriceBowl.toFixed(2)}`);
+      paragraph.innerHTML += (`Bakje      ${Total["TotalBowl"]} x = €${CalculatePriceBowl.toFixed(2)}`) + "<br>";
    }else{null}
    if(Topping["Topping"] > 0){
-      console.log(`Topping    ${Topping["Topping"]} x = €${Topping["ToppingTotal"]}`);
+      paragraph.innerHTML += (`Topping    ${Topping["Topping"]} x = €${Topping["ToppingTotal"]}`) + "<br>";
    }else{null}
-   console.log("------------------------------------------------");
-   console.log(`TotalPrice €${CalculateTotalPrice.toFixed(2)}`);
-}  
+   paragraph.innerHTML += ("---------------------------------------") + "<br>";
+   paragraph.innerHTML += (`TotalPrice €${CalculateTotalPrice.toFixed(2)}`) + "<br>";
+}
 function Order(){
    var AskCustomerOrder = prompt("wilt u nog meer bestellen Y/N:? ").toUpperCase();
    if(AskCustomerOrder == "Y"){
