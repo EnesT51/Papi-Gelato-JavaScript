@@ -205,7 +205,7 @@ while(holder){
             var HornOrBowl = AskCustomerBowlOrHorn();
          }else if (Total["TotalBalls"] >= 3 && Total["TotalBalls"] <= 8){
             HornOrBowl = "Bakje";
-         }console.log(`Dan krijgt u van mij een ${HornOrBowl} met ${Total["TotalBalls"]} bolletjes`);
+         }alert(`Dan krijgt u van mij een ${HornOrBowl} met ${Total["TotalBalls"]} bolletjes`);
          if(HornOrBowl == "Hoorntje"){Total["TotalHorn"] +=1; }
          else{Total["TotalBowl"] +=1; }
          AskCustomerIceFlawor();
