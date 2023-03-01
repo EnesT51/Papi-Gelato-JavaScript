@@ -4,63 +4,69 @@ var Total = {TotalHorn: 0, TotalBowl: 0, TotalBalls: 0};
 var ZakelijkijsBoninfo = {PrijsLiterIjs: 9.80, LiterIjs: 0};
 var Topping = {Topping: 0, ToppingTotal: 0};
 
-var text = document.createElement("h2");
-var node = document.createTextNode("[Bon Papi-Gelato]");
-var paragraph = document.createElement("p");
-text.appendChild(node);
-document.body.appendChild(text);
-document.body.appendChild(paragraph);
-
 function Welcome(){
-   console.log('Welcome to Papi Gelato.');
+   alert('Welcome to Papi Gelato.');
 }
 function Thanks(){
-   console.log('Thanks and see you again.');
+   alert('Thanks and see you again.');
 }
 function Sorry(){
-   console.log("Sorry dat is geen optie die we aanbieden...");
+   alert("Sorry dat is geen optie die we aanbieden...");
 }
 function OutOfOrder(){
-   console.log("Sorry, zulke grote bakken hebben we niet");
+   alert("Sorry, zulke grote bakken hebben we niet");
 }
 function TypeCustomer(){
    bool = true;
    while(bool){
       var bool = false;
       var Customer = prompt("Bent u (A) zakelijk of (B) particuier? kies (A) voor zakelijk (B) voor particulier ").toUpperCase();
-      if(Customer == "A" || Customer == "B"){
-         return Customer;
+      switch(Customer){
+         case "A": case "B":
+            return Customer;
+         case null:
+            return;
+         default:
+            Sorry();
+            bool = true;
       }
-      else if (Customer == null){
-         return;
-      }
-      Sorry();
-      bool = true;
    }
 }
 function ZakelijkIjsBon(){
-   var Total = (ZakelijkijsBoninfo["LiterIjs"] * ZakelijkijsBoninfo["PrijsLiterIjs"]);
+   var text = document.createElement("h2");
+   var node = document.createTextNode("[Bon Papi-Gelato]");
+   var paragraph = document.createElement("p");
+   text.appendChild(node);
+   document.body.appendChild(text);
+   document.body.appendChild(paragraph);
+   var Total = (ZakelijkijsBoninfo["LiterIjs"] * ZakelijkijsBoninfo["PrijsLiterIjs"]).toFixed(2);
    var BTW = (Total/106*6).toFixed(2);
    paragraph.innerHTML += ("------------[Papi Gelato]------------") + "<br>";
    paragraph.innerHTML += (`Liter    ${ZakelijkijsBoninfo["LiterIjs"]} x  ${ZakelijkijsBoninfo["PrijsLiterIjs"]} = €${Total}`) + "<br>";
-   paragraph.innerHTML += (`Totaal   = €${Total}`) + "<br>";
    paragraph.innerHTML += (`BTW (6%) = €${BTW}`) + "<br>";
+   paragraph.innerHTML += (`----------------------------------------`) + "<br>";
+   paragraph.innerHTML += (`Totaal   = €${Total}`) + "<br>";
 }
 function ZakelijkIjsSmaken(){
    let literijs = parseInt(prompt("Hoeveel liter ijs wilt u hebben? "));
    ZakelijkijsBoninfo["LiterIjs"] = literijs;
-
    for(let i = 0; i < literijs; i++){
       let smaken = prompt(`Welke smaak wilt u voor ${i + 1} literijs? A) Aardbei, C) Chocolade, of V) Vanille? `).toUpperCase();
-      if(smaken == "A"){
-         IceOptions["IceFlawor"] = "Aardbei";
-      }else if (smaken == "C"){
-         IceOptions["IceFlawor"] = "Chocolade";
-      }else if(smaken == "V"){
-         IceOptions["IceFlawor"] = "Vanillie";
-      }else{
-         Sorry();
-         ZakelijkIjsSmaken();
+      switch(smaken){
+         case "A":
+            IceOptions["IceFlawor"] = "Aardbei";
+            break;
+         case "C":
+            IceOptions["IceFlawor"] = "Chocolade";
+            break;
+         case "V":
+            IceOptions["IceFlawor"] = "Vanillie";
+            break;
+         default:
+            smaken = "";
+            literijs = 0;
+            Sorry();
+            ZakelijkIjsSmaken();
       }
    }
 }
@@ -69,35 +75,49 @@ function Toppings(BakjeHoorentje){
    while(repeat){
       repeat = false;
       PrompToppings = prompt("Wat voor topping wilt u: A) Geen, B) Slagroom, C) Sprinkels of D) Caramel Saus?").toUpperCase();
-      if(PrompToppings == "A"){
-         continue;
-      }else if (PrompToppings == "B"){
-         Topping["Topping"] +=1;
-         Topping["ToppingTotal"] += IceToppings["CreamPrice"];
-      }else if(PrompToppings == "C"){
-         Topping["Topping"] +=1;
-         Topping["ToppingTotal"] += IceToppings["SprinklesPrice"];
-      }else if (PrompToppings == "D"){
-         Topping["Topping"] +=1
-         if(BakjeHoorentje == "hoorntje"){
-            Topping["ToppingTotal"] += IceToppings["CaramelHornPrice"];
-         }else{
-            Topping["ToppingTotal"] += IceToppings["CaramelBowlPrice"];
-         }
-      }else{
-         Sorry();
-         repeat = true;
+      switch(PrompToppings){
+         case "A":
+            break;
+         case "B":
+            Topping["Topping"] +=1;
+            Topping["ToppingTotal"] += IceToppings["CreamPrice"];
+            break;
+         case "C":
+            Topping["Topping"] +=1;
+            Topping["ToppingTotal"] += IceToppings["SprinklesPrice"];
+            break;
+         case "D":
+            Topping["Topping"] +=1
+            switch(BakjeHoorentje){
+               case "Hoorntje":
+                  Topping["ToppingTotal"] += IceToppings["CaramelHornPrice"];
+                  repeat = false;
+                  break;
+               case "Hakje":
+                  Topping["ToppingTotal"] += IceToppings["CaramelBowlPrice"];
+                  repeat = false;
+                  break;
+         }  break; 
+         default:
+            Sorry();
+            repeat = true;
       }
-   }
+   } 
 }
+
 function Bon(){
-   var IceBalls = Total["TotalBalls"];
+   var text = document.createElement("h2");
+   var node = document.createTextNode("[Bon Papi-Gelato]");
+   var paragraph = document.createElement("p");
+   text.appendChild(node);
+   document.body.appendChild(text);
+   document.body.appendChild(paragraph);
    var CalculatePriceIceBalls = Total["TotalBalls"] * IceOptions["IcePrice"];
    var CalculatePriceBowl = Total["TotalBowl"] * IceOptions["PriceBowlIce"];
    var CalculatePriceHorn = Total["TotalHorn"] * IceOptions["PriceHornIce"];
    var CalculateTotalPrice = CalculatePriceIceBalls + CalculatePriceBowl + CalculatePriceHorn + Topping["ToppingTotal"];
 
-   paragraph.innerHTML += ("------------[Papi Gelato]--------------") + "<br>";
+   paragraph.innerHTML += ("------------[Papi Gelato]-----------") + "<br>";
    paragraph.innerHTML += (`Bolletjes ${Total["TotalBalls"]} x €${IceOptions["IcePrice"]} = ${CalculatePriceIceBalls.toFixed(2)}`) + "<br>";
    if(Total["TotalHorn"] > 0){
       paragraph.innerHTML += (`Hoorntje   ${Total["TotalHorn"]} x = €${CalculatePriceHorn.toFixed(2)}`) + "<br>";
@@ -113,14 +133,14 @@ function Bon(){
 }
 function Order(){
    var AskCustomerOrder = prompt("wilt u nog meer bestellen Y/N:? ").toUpperCase();
-   if(AskCustomerOrder == "Y"){
-      return true;
-   }else if(AskCustomerOrder == "N"){
-      return false;
-   }
-   else{
-      Sorry();
-      Order();
+   switch(AskCustomerOrder){
+      case "Y":
+         return true;
+      case "N":
+         return false;
+      default:
+         Sorry();
+         Order();
    }
 }
 function AskCustomerBowlOrHorn(){
@@ -128,13 +148,15 @@ function AskCustomerBowlOrHorn(){
    while(bool){
       bool = false;
       AskBowlOrHorn = prompt(`Wilt u deze ${Total["TotalBalls"]} bolletje(s) in A) een hoorntje of B) een bakje?`).toUpperCase();
-      if(AskBowlOrHorn == "A"){
-         return "Hoorntje";
-      }else if (AskBowlOrHorn == "B"){
-         return "Bakje";
-      }else{
-         Sorry();
-         AskCustomerBowlOrHorn();
+      switch(AskBowlOrHorn){
+         case "A":
+            return "Hoorntje";
+         case "Bakje":
+            return "Bakje";
+         default:
+            Sorry();
+            AskCustomerBowlOrHorn();
+            bool = true;
       }
    }
 }
@@ -151,15 +173,19 @@ function AskCustomerIceBalls(){
 function AskCustomerIceFlawor(){
    for(let i = 0; i < Total["TotalBalls"]; i ++){
       var AskFlawor = prompt(`Welke smaak wilt u voor bolletje nummer ${i + 1}? A) Aardbei, C) Chocolade, of V) Vanille? `).toUpperCase();
-      if(AskFlawor == "A"){
-         IceOptions["Iceflawor"] = "Aardbei";
-      }else if (AskFlawor == "C"){
-         IceOptions["Iceflawor"] = "Chocolade";
-      }else if (AskFlawor == "V"){
-         IceOptions["Iceflawor"] = "Vanille";
-      }else{
-         Sorry();
-         AskCustomerIceFlawor();
+      switch(AskFlawor){
+         case "A":
+            IceOptions["Iceflawor"] = "Aardbei";
+            break;
+         case "C":
+            IceOptions["Iceflawor"] = "Chocolade";
+            break;
+         case "V":
+            IceOptions["Iceflawor"] = "Vanille";
+            break;
+         default:
+         	Sorry();
+            AskCustomerIceFlawor();
       }
    }
 }
@@ -167,23 +193,26 @@ Welcome();
 holder = true;
 while(holder){
    var Typecustomer = TypeCustomer();
-   if(Typecustomer == "A"){
-      ZakelijkIjsSmaken();
-      ZakelijkIjsBon();
-      holder = false;
-   }else{
-      AskCustomerIceBalls();
-      if(Total["TotalBalls"] >= 1 && Total["TotalBalls"] <= 3){
-         var HornOrBowl = AskCustomerBowlOrHorn();
-      }else if (Total["TotalBalls"] >= 3 && Total["TotalBalls"] <= 8){
-         HornOrBowl = "Bakje";
-      }console.log(`Dan krijgt u van mij een ${HornOrBowl} met ${Total["TotalBalls"]} bolletjes`);
-      if(HornOrBowl == "Hoorntje"){Total["TotalHorn"] +=1; }
-      else{Total["TotalBowl"] +=1; }
-      AskCustomerIceFlawor();
-      Toppings(HornOrBowl);
-      holder = Order();
-      Bon();
+   switch(Typecustomer){
+      case "A":
+         ZakelijkIjsSmaken();
+         ZakelijkIjsBon();
+         holder = false;
+         break;
+      default:
+         AskCustomerIceBalls();
+         if(Total["TotalBalls"] >= 1 && Total["TotalBalls"] <= 3){
+            var HornOrBowl = AskCustomerBowlOrHorn();
+         }else if (Total["TotalBalls"] >= 3 && Total["TotalBalls"] <= 8){
+            HornOrBowl = "Bakje";
+         }console.log(`Dan krijgt u van mij een ${HornOrBowl} met ${Total["TotalBalls"]} bolletjes`);
+         if(HornOrBowl == "Hoorntje"){Total["TotalHorn"] +=1; }
+         else{Total["TotalBowl"] +=1; }
+         AskCustomerIceFlawor();
+         Toppings(HornOrBowl);
+         holder = Order();
+         Bon();
+         break;
    }
 }
 Thanks();
